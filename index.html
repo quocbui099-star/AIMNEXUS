@@ -1,0 +1,3454 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#030304">
+
+<title>AIMNEXUS</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  min-height:100%;
+  background:#030304;
+  color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+body{
+  overflow-x:hidden;
+}
+
+button,input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+/* ================= BACKGROUND ================= */
+
+.bg{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+  pointer-events:none;
+  background:#030304;
+}
+
+.grid{
+  position:absolute;
+  inset:-20%;
+  opacity:.04;
+  background-image:
+    linear-gradient(rgba(255,20,50,.12) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,20,50,.12) 1px,transparent 1px);
+  background-size:32px 32px;
+  transform:perspective(500px) rotateX(60deg);
+  transform-origin:center bottom;
+  animation:gridMove 12s linear infinite;
+}
+
+@keyframes gridMove{
+  from{background-position:0 0}
+  to{background-position:0 320px}
+}
+
+.scan{
+  position:absolute;
+  width:100%;
+  height:1px;
+  top:-5%;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,23,56,.6),
+    transparent
+  );
+  opacity:.06;
+  animation:scan 6s linear infinite;
+}
+
+@keyframes scan{
+  to{top:105%}
+}
+
+.orb{
+  position:absolute;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background:#ff1738;
+  filter:blur(110px);
+  opacity:.025;
+}
+
+.orb.a{
+  left:-120px;
+  top:-100px;
+}
+
+.orb.b{
+  right:-130px;
+  bottom:-120px;
+}
+
+#redSnow{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+  pointer-events:none;
+}
+
+#login,
+#app{
+  position:relative;
+  z-index:10;
+}
+
+/* ================= LOGIN ================= */
+
+#login{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+
+.login-card{
+  width:min(100%,430px);
+  padding:28px 20px 27px;
+  border-radius:28px;
+  border:1px solid rgba(255,23,56,.20);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(23,8,12,.97),
+      rgba(7,5,7,.97)
+    );
+  box-shadow:
+    0 0 45px rgba(255,23,56,.06),
+    0 30px 100px rgba(0,0,0,.65);
+  animation:loginIn .6s ease both;
+}
+
+@keyframes loginIn{
+  from{
+    opacity:0;
+    transform:translateY(15px) scale(.985);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+/* ================= SKULL ================= */
+
+.skull-logo{
+  width:155px;
+  height:170px;
+  margin:0 auto 25px;
+
+  filter:
+    drop-shadow(0 0 8px rgba(255,23,56,.9))
+    drop-shadow(0 0 30px rgba(255,23,56,.30));
+
+  /*
+    Chỉ chuyển động lên xuống.
+    Không xoay trái/phải.
+  */
+  animation:skullVertical 4.2s ease-in-out infinite;
+  will-change:transform;
+}
+
+.skull-logo svg{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+@keyframes skullVertical{
+  0%,100%{
+    transform:translate3d(0,0,0);
+  }
+
+  50%{
+    transform:translate3d(0,-5px,0);
+  }
+}
+
+.eye{
+  animation:eyeGlow 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes eyeGlow{
+  from{
+    filter:drop-shadow(0 0 2px #ff1738);
+  }
+
+  to{
+    filter:drop-shadow(0 0 7px #ff1738);
+  }
+}
+
+/* ================= TITLE ================= */
+
+.login-title{
+  width:100%;
+  text-align:center;
+  margin:0 auto 25px;
+
+  font-size:27px;
+  line-height:1.1;
+  font-weight:950;
+  letter-spacing:2px;
+}
+
+.login-title span{
+  color:#ff1738;
+  text-shadow:0 0 18px rgba(255,23,56,.4);
+}
+
+/* ================= INPUT ================= */
+
+.key-input{
+  display:block;
+  width:100%;
+  height:54px;
+
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:15px;
+
+  outline:none;
+  padding:0 15px;
+
+  color:#fff;
+  background:#070608;
+
+  font-size:14px;
+
+  -webkit-appearance:none;
+  appearance:none;
+
+  caret-color:#ff1738;
+
+  transition:
+    border-color .15s ease,
+    box-shadow .15s ease;
+}
+
+.key-input::placeholder{
+  color:#888086;
+  font-size:13px;
+}
+
+.key-input:focus{
+  border-color:#ff1738;
+  box-shadow:
+    0 0 0 3px rgba(255,23,56,.07);
+}
+
+.login-btn{
+  display:block;
+  width:100%;
+  height:54px;
+
+  margin-top:11px;
+
+  border:0;
+  border-radius:15px;
+
+  color:#fff;
+
+  font-weight:950;
+  letter-spacing:1px;
+
+  background:
+    linear-gradient(
+      110deg,
+      #ff1738,
+      #a90020
+    );
+
+  box-shadow:
+    0 9px 30px rgba(255,23,56,.20),
+    inset 0 1px rgba(255,255,255,.20);
+
+  transition:transform .12s ease;
+}
+
+.login-btn:active{
+  transform:scale(.98);
+}
+
+.error{
+  height:18px;
+  margin-top:10px;
+  text-align:center;
+  color:#ff6378;
+  font-size:10px;
+}
+
+/* ================= APP ================= */
+
+#app{
+  display:none;
+}
+
+.container{
+  width:min(100%,590px);
+  margin:auto;
+  padding:16px 14px 45px;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:4px 3px 18px;
+}
+
+.brand{
+  font-size:24px;
+  font-weight:950;
+  letter-spacing:1px;
+}
+
+.brand span{
+  color:#ff1738;
+  text-shadow:0 0 17px #ff1738;
+}
+
+.subbrand{
+  margin-top:4px;
+  color:#675a60;
+  font-size:8px;
+  letter-spacing:1px;
+}
+
+.online{
+  padding:7px 11px;
+  border-radius:20px;
+  color:#ff5269;
+  border:1px solid rgba(255,23,56,.2);
+  background:rgba(255,23,56,.06);
+  font-size:8px;
+  font-weight:900;
+}
+
+/* ================= CARD ================= */
+
+.card{
+  position:relative;
+  overflow:hidden;
+
+  padding:17px;
+  margin-bottom:13px;
+
+  border-radius:22px;
+
+  border:1px solid rgba(255,23,56,.16);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,8,11,.96),
+      rgba(7,6,8,.96)
+    );
+
+  box-shadow:
+    0 18px 55px rgba(0,0,0,.35);
+}
+
+.card:before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:12%;
+  right:12%;
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #ff1738,
+      transparent
+    );
+
+  box-shadow:0 0 12px #ff1738;
+}
+
+.head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px;
+}
+
+.title{
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:.5px;
+}
+
+.mini{
+  color:#655960;
+  font-size:8px;
+}
+
+/* ================= KEY INFO ================= */
+
+.key-info{
+  margin-bottom:13px;
+}
+
+.key-info-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:13px;
+}
+
+.key-info-title{
+  font-size:13px;
+  font-weight:900;
+}
+
+.key-status{
+  display:flex;
+  align-items:center;
+  gap:5px;
+
+  color:#48e59a;
+  font-size:8px;
+  font-weight:900;
+}
+
+.key-status i{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#48e59a;
+  box-shadow:0 0 8px #48e59a;
+}
+
+.key-name{
+  margin-bottom:12px;
+  padding:11px 12px;
+
+  border-radius:12px;
+
+  background:#050405;
+  border:1px solid rgba(255,23,56,.10);
+
+  color:#ff405b;
+
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.5px;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.key-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.key-box{
+  padding:11px;
+
+  border-radius:12px;
+
+  background:#050405;
+  border:1px solid rgba(255,255,255,.05);
+}
+
+.key-label{
+  color:#62565d;
+  font-size:8px;
+  margin-bottom:5px;
+}
+
+.key-value{
+  color:#eee;
+  font-size:10px;
+  font-weight:800;
+}
+
+.key-countdown{
+  margin-top:10px;
+  padding:10px;
+
+  border-radius:11px;
+
+  text-align:center;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,23,56,.07),
+      rgba(255,23,56,.025)
+    );
+
+  border:1px solid rgba(255,23,56,.10);
+
+  color:#ff405b;
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:.7px;
+}
+
+/* ================= PLATFORM ================= */
+
+.platforms{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+
+.platform{
+  padding:14px;
+
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:16px;
+
+  color:#70636a;
+  text-align:left;
+
+  background:#070608;
+
+  transition:
+    transform .12s ease,
+    border-color .18s ease;
+}
+
+.platform:active{
+  transform:scale(.975);
+}
+
+.platform.active{
+  color:#fff;
+
+  border-color:rgba(255,23,56,.55);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,23,56,.14),
+      rgba(110,0,25,.05)
+    );
+}
+
+.platform b{
+  display:block;
+  font-size:14px;
+}
+
+.platform span{
+  display:block;
+  margin-top:4px;
+  color:#655960;
+  font-size:9px;
+}
+
+/* ================= FUNCTIONS ================= */
+
+.feature{
+  min-height:64px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.feature:last-child{
+  border-bottom:0;
+}
+
+.feature-name{
+  font-size:13px;
+  font-weight:800;
+}
+
+.feature-desc{
+  margin-top:4px;
+  color:#655960;
+  font-size:9px;
+}
+
+/* ================= SWITCH ================= */
+
+.switch{
+  width:48px;
+  height:27px;
+
+  padding:3px;
+
+  border-radius:30px;
+
+  background:#272126;
+
+  transition:
+    background .20s ease,
+    box-shadow .20s ease,
+    transform .10s ease;
+
+  will-change:transform;
+}
+
+.switch i{
+  display:block;
+
+  width:21px;
+  height:21px;
+
+  border-radius:50%;
+
+  background:#81757b;
+
+  transition:
+    transform .20s cubic-bezier(.22,1,.36,1),
+    background .15s ease;
+
+  will-change:transform;
+}
+
+.switch.on{
+  background:
+    linear-gradient(
+      90deg,
+      #ff1738,
+      #a90020
+    );
+
+  box-shadow:
+    0 0 16px rgba(255,23,56,.24);
+}
+
+.switch.on i{
+  transform:translate3d(21px,0,0);
+  background:#fff;
+}
+
+.switch:active{
+  transform:scale(.93);
+}
+
+/* ================= CHART ================= */
+
+.activity-chart{
+  margin-top:15px;
+  padding:14px;
+
+  border-radius:17px;
+
+  border:1px solid rgba(255,23,56,.10);
+
+  background:#050405;
+  overflow:hidden;
+}
+
+.activity-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.activity-title{
+  color:#8d8187;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.8px;
+}
+
+.activity-live{
+  display:flex;
+  align-items:center;
+  gap:5px;
+
+  color:#ff405b;
+
+  font-size:8px;
+  font-weight:900;
+}
+
+.activity-live i{
+  width:6px;
+  height:6px;
+
+  display:block;
+
+  border-radius:50%;
+
+  background:#ff1738;
+  box-shadow:0 0 8px #ff1738;
+
+  animation:livePulse 1s ease-in-out infinite;
+}
+
+@keyframes livePulse{
+  0%,100%{
+    opacity:.35;
+    transform:scale(.8);
+  }
+
+  50%{
+    opacity:1;
+    transform:scale(1.15);
+  }
+}
+
+.chart{
+  position:relative;
+  width:100%;
+  height:105px;
+  overflow:hidden;
+  border-radius:11px;
+
+  background:
+    linear-gradient(
+      rgba(255,23,56,.045) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,23,56,.045) 1px,
+      transparent 1px
+    ),
+    #030304;
+
+  background-size:25px 25px;
+}
+
+.chart svg{
+  width:100%;
+  height:100%;
+  display:block;
+  overflow:visible;
+}
+
+.chart-line{
+  fill:none;
+  stroke:#ff1738;
+  stroke-width:2.5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  filter:drop-shadow(0 0 5px rgba(255,23,56,.7));
+}
+
+.chart-fill{
+  fill:url(#chartGradient);
+  opacity:.12;
+}
+
+.chart-dot{
+  fill:#fff;
+  stroke:#ff1738;
+  stroke-width:2;
+  filter:drop-shadow(0 0 5px #ff1738);
+}
+
+.chart-status{
+  display:flex;
+  justify-content:space-between;
+  margin-top:9px;
+  color:#5e5359;
+  font-size:8px;
+}
+
+.chart-value{
+  color:#ff405b;
+  font-weight:900;
+}
+
+/* ================= EDITOR ================= */
+
+.hidden{
+  display:none!important;
+}
+
+.editor{
+  margin-top:12px;
+  padding:15px;
+
+  border-radius:18px;
+
+  background:#060507;
+
+  border:1px solid rgba(255,23,56,.11);
+
+  animation:editorIn .22s ease both;
+}
+
+@keyframes editorIn{
+  from{
+    opacity:0;
+    transform:translateY(-6px);
+  }
+
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.control{
+  margin-bottom:15px;
+}
+
+.control-head{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:9px;
+}
+
+.control-head span{
+  color:#81757b;
+  font-size:9px;
+}
+
+.value{
+  color:#ff4962!important;
+  font-weight:900;
+}
+
+.shape-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:6px;
+}
+
+.shape{
+  height:39px;
+
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;
+
+  color:#756970;
+  background:#090709;
+
+  font-size:16px;
+
+  transition:
+    transform .10s ease,
+    border-color .18s ease;
+}
+
+.shape:active{
+  transform:scale(.92);
+}
+
+.shape.active{
+  color:#ff1738;
+  border-color:#ff1738;
+  box-shadow:0 0 13px rgba(255,23,56,.15);
+}
+
+input[type=range]{
+  width:100%;
+  accent-color:#ff1738;
+}
+
+.color-line{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+input[type=color]{
+  width:45px;
+  height:31px;
+  padding:2px;
+
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:9px;
+
+  background:#080709;
+}
+
+.preview{
+  height:175px;
+
+  margin-top:14px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:15px;
+
+  border:1px solid rgba(255,255,255,.05);
+
+  background:
+    linear-gradient(
+      rgba(255,23,56,.04) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,23,56,.04) 1px,
+      transparent 1px
+    ),
+    #030304;
+
+  background-size:20px 20px;
+}
+
+.crosshair{
+  position:relative;
+  width:80px;
+  height:80px;
+  color:#ff1738;
+
+  transition:
+    width .15s ease,
+    height .15s ease,
+    color .15s ease;
+}
+
+.crosshair.circle{
+  border:3px solid currentColor;
+  border-radius:50%;
+}
+
+.crosshair.double{
+  border:2px solid currentColor;
+  border-radius:50%;
+  box-shadow:0 0 0 12px currentColor;
+}
+
+.crosshair.plus:before,
+.crosshair.plus:after{
+  content:"";
+  position:absolute;
+  background:currentColor;
+}
+
+.crosshair.plus:before{
+  width:3px;
+  height:100%;
+  left:calc(50% - 1.5px);
+}
+
+.crosshair.plus:after{
+  width:100%;
+  height:3px;
+  top:calc(50% - 1.5px);
+}
+
+.crosshair.cross:before,
+.crosshair.cross:after{
+  content:"";
+  position:absolute;
+
+  width:3px;
+  height:100%;
+
+  left:calc(50% - 1.5px);
+
+  background:currentColor;
+}
+
+.crosshair.cross:before{
+  transform:rotate(45deg);
+}
+
+.crosshair.cross:after{
+  transform:rotate(-45deg);
+}
+
+.crosshair.dot{
+  width:18px!important;
+  height:18px!important;
+  border-radius:50%;
+  background:currentColor;
+  box-shadow:0 0 20px currentColor;
+}
+
+.center-dot{
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  width:7px;
+  height:7px;
+
+  transform:translate(-50%,-50%);
+
+  border-radius:50%;
+
+  background:#fff;
+
+  box-shadow:0 0 10px #fff;
+}
+
+/* ================= GAME ================= */
+
+.games{
+  display:grid;
+  gap:9px;
+}
+
+.game{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:14px;
+
+  border-radius:15px;
+
+  background:#060507;
+
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.game b{
+  font-size:13px;
+}
+
+.game span{
+  display:block;
+  margin-top:4px;
+  color:#655960;
+  font-size:9px;
+}
+
+.open{
+  border:0;
+
+  border-radius:10px;
+
+  padding:9px 15px;
+
+  color:#fff;
+
+  font-size:10px;
+  font-weight:950;
+
+  background:
+    linear-gradient(
+      110deg,
+      #ff1738,
+      #a90020
+    );
+
+  box-shadow:
+    0 0 18px rgba(255,23,56,.2);
+
+  transition:
+    transform .10s ease;
+}
+
+.open:active{
+  transform:scale(.93);
+}
+
+.logout{
+  width:100%;
+  height:44px;
+
+  border:1px solid rgba(255,255,255,.07);
+
+  border-radius:13px;
+
+  color:#6c6066;
+
+  background:rgba(255,255,255,.025);
+}
+
+/* ================= TOAST ================= */
+
+.toast{
+  position:fixed;
+  z-index:50;
+
+  left:50%;
+  bottom:22px;
+
+  padding:11px 17px;
+
+  border-radius:30px;
+
+  color:#ff5269;
+
+  background:#0d080a;
+
+  border:1px solid rgba(255,23,56,.3);
+
+  box-shadow:0 10px 35px rgba(0,0,0,.5);
+
+  transform:translate3d(-50%,20px,0);
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:
+    opacity .18s ease,
+    transform .20s ease;
+
+  white-space:nowrap;
+
+  font-size:9px;
+  font-weight:800;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translate3d(-50%,0,0);
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:380px){
+
+  .login-card{
+    padding:25px 16px 25px;
+  }
+
+  .skull-logo{
+    width:140px;
+    height:155px;
+    margin-bottom:23px;
+  }
+
+  .login-title{
+    font-size:24px;
+    margin-bottom:23px;
+  }
+
+  .container{
+    padding-left:11px;
+    padding-right:11px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- BACKGROUND -->
+
+<div class="bg">
+  <div class="grid"></div>
+  <div class="scan"></div>
+  <div class="orb a"></div>
+  <div class="orb b"></div>
+</div>
+
+<canvas id="redSnow"></canvas>
+
+
+<!-- LOGIN -->
+
+<section id="login">
+
+<div class="login-card">
+
+<div class="skull-logo">
+
+<svg viewBox="0 0 420 460"
+xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+
+<linearGradient id="face"
+x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#fff"/>
+<stop offset=".55" stop-color="#e9edf2"/>
+<stop offset="1" stop-color="#aeb6c0"/>
+</linearGradient>
+
+<linearGradient id="gold"
+x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#fff36b"/>
+<stop offset=".45" stop-color="#ffc400"/>
+<stop offset="1" stop-color="#c77b00"/>
+</linearGradient>
+
+<filter id="redGlow">
+<feGaussianBlur stdDeviation="5" result="b"/>
+<feMerge>
+<feMergeNode in="b"/>
+<feMergeNode in="SourceGraphic"/>
+</feMerge>
+</filter>
+
+</defs>
+
+<!-- CROWN -->
+
+<path
+d="M247 76 L239 30 L267 54 L286 15 L298 57 L337 32 L321 78 C300 88 270 88 247 76Z"
+fill="url(#gold)"
+stroke="#ffb900"
+stroke-width="6"
+stroke-linejoin="round"/>
+
+<circle cx="286" cy="15" r="7" fill="#fff06a"/>
+<circle cx="239" cy="30" r="5" fill="#fff06a"/>
+<circle cx="337" cy="32" r="5" fill="#fff06a"/>
+
+<!-- HORNS -->
+
+<path
+d="M92 116 C52 102 28 73 39 35 C66 48 92 72 112 101Z"
+fill="#080808"
+stroke="#ff1738"
+stroke-width="7"/>
+
+<path
+d="M328 116 C368 102 392 73 381 35 C354 48 328 72 308 101Z"
+fill="#080808"
+stroke="#ff1738"
+stroke-width="7"/>
+
+<!-- SKULL -->
+
+<path
+d="M210 51 C126 51 76 103 82 181 C85 226 105 257 134 274 L134 326 C134 340 147 346 154 334 L158 309 L176 309 L176 351 C176 368 193 372 201 355 L205 310 L215 310 L219 355 C227 372 244 368 244 351 L244 309 L262 309 L266 334 C273 346 286 340 286 326 L286 274 C315 257 335 226 338 181 C344 103 294 51 210 51Z"
+fill="#050505"
+stroke="#ff1738"
+stroke-width="8"
+filter="url(#redGlow)"/>
+
+<path
+d="M210 67 C144 67 99 110 99 176 C99 221 120 249 151 261 C169 268 191 270 210 270 C229 270 251 268 269 261 C300 249 321 221 321 176 C321 110 276 67 210 67Z"
+fill="url(#face)"/>
+
+<path
+d="M270 80 C301 102 317 134 317 176 C317 215 298 241 270 254 C284 223 286 194 282 157 C278 123 267 99 249 81Z"
+fill="#c5ccd5"/>
+
+<!-- EYES -->
+
+<path
+class="eye"
+d="M117 165 C128 132 158 119 184 143 C196 155 193 184 174 202 C151 220 119 205 114 181Z"
+fill="#010101"
+stroke="#ff1738"
+stroke-width="5"/>
+
+<ellipse cx="153" cy="163" rx="9" ry="12" fill="#fff"/>
+<circle cx="171" cy="188" r="4" fill="#fff"/>
+
+<path
+class="eye"
+d="M303 165 C292 132 262 119 236 143 C224 155 227 184 246 202 C269 220 301 205 306 181Z"
+fill="#010101"
+stroke="#ff1738"
+stroke-width="5"/>
+
+<ellipse cx="267" cy="163" rx="9" ry="12" fill="#fff"/>
+<circle cx="249" cy="188" r="4" fill="#fff"/>
+
+<!-- BROWS -->
+
+<path
+d="M118 132L169 113L190 125"
+fill="none"
+stroke="#111"
+stroke-width="10"
+stroke-linecap="round"/>
+
+<path
+d="M302 132L251 113L230 125"
+fill="none"
+stroke="#111"
+stroke-width="10"
+stroke-linecap="round"/>
+
+<!-- NOSE -->
+
+<path
+d="M210 177 L189 215 L210 230 L231 215Z"
+fill="#030303"
+stroke="#ff304b"
+stroke-width="5"/>
+
+<!-- CHEEKS -->
+
+<path
+d="M105 212 L145 201 L174 228 L142 255 L112 244Z"
+fill="#101010"
+stroke="#ff1738"
+stroke-width="4"/>
+
+<path
+d="M315 212 L275 201 L246 228 L278 255 L308 244Z"
+fill="#101010"
+stroke="#ff1738"
+stroke-width="4"/>
+
+<!-- MOUTH -->
+
+<path
+d="M130 252 C166 271 254 271 290 252 L270 311 C244 326 176 326 150 311Z"
+fill="#050505"
+stroke="#ff1738"
+stroke-width="6"/>
+
+<path
+d="M151 260V301
+M173 265V313
+M195 268V317
+M225 268V317
+M247 265V313
+M269 260V301"
+stroke="#f4f4f4"
+stroke-width="8"
+stroke-linecap="round"/>
+
+<!-- CRACKS -->
+
+<g fill="none" stroke="#ff304b" stroke-width="4" stroke-linecap="round">
+
+<path d="M137 88L154 108L147 127"/>
+<path d="M283 88L266 108L273 127"/>
+<path d="M210 74L201 101L211 114"/>
+<path d="M112 232L94 248"/>
+<path d="M308 232L326 248"/>
+
+</g>
+
+<!-- TECH -->
+
+<g fill="none" stroke="#ff1738" stroke-width="3">
+
+<path d="M91 150L67 162L67 181"/>
+<path d="M329 150L353 162L353 181"/>
+<path d="M116 283L89 299L89 318"/>
+<path d="M304 283L331 299L331 318"/>
+
+</g>
+
+<g fill="#ff304b">
+<circle cx="107" cy="113" r="5"/>
+<circle cx="313" cy="113" r="5"/>
+<circle cx="116" cy="250" r="5"/>
+<circle cx="304" cy="250" r="5"/>
+</g>
+
+</svg>
+
+</div>
+
+<div class="login-title">
+AIM <span>NEXUS</span>
+</div>
+
+<input
+id="keyInput"
+class="key-input"
+type="password"
+placeholder="ENTER ACCESS KEY"
+autocomplete="off"
+inputmode="text"
+spellcheck="false">
+
+<button
+id="loginBtn"
+class="login-btn"
+type="button">
+UNLOCK PANEL
+</button>
+
+<div id="error" class="error"></div>
+
+</div>
+
+</section>
+
+
+<!-- APP -->
+
+<section id="app">
+
+<div class="container">
+
+<div class="topbar">
+
+<div>
+
+<div class="brand">
+AIM <span>NEXUS</span>
+</div>
+
+<div class="subbrand">
+ADVANCED CONTROL INTERFACE
+</div>
+
+</div>
+
+<div class="online">
+● ONLINE
+</div>
+
+</div>
+
+
+<!-- KEY INFORMATION -->
+
+<div class="card key-info">
+
+<div class="key-info-head">
+
+<div class="key-info-title">
+KEY INFORMATION
+</div>
+
+<div class="key-status">
+<i></i>
+ACTIVE
+</div>
+
+</div>
+
+<div
+class="key-name"
+id="infoKey">
+-
+</div>
+
+<div class="key-grid">
+
+<div class="key-box">
+
+<div class="key-label">
+NGÀY SỬ DỤNG
+</div>
+
+<div
+class="key-value"
+id="infoStart">
+-
+</div>
+
+</div>
+
+<div class="key-box">
+
+<div class="key-label">
+NGÀY HẾT HẠN
+</div>
+
+<div
+class="key-value"
+id="infoExpire">
+-
+</div>
+
+</div>
+
+</div>
+
+<div
+class="key-countdown"
+id="countdown">
+ĐANG TẢI...
+</div>
+
+</div>
+
+
+<!-- PLATFORM -->
+
+<div class="card">
+
+<div class="head">
+
+<div class="title">
+PLATFORM
+</div>
+
+<div
+class="mini"
+id="platformText">
+iOS
+</div>
+
+</div>
+
+<div class="platforms">
+
+<button
+id="iosBtn"
+class="platform active"
+type="button">
+
+<b>iOS</b>
+
+<span>
+iPhone / iPad
+</span>
+
+</button>
+
+<button
+id="androidBtn"
+class="platform"
+type="button">
+
+<b>ANDROID</b>
+
+<span>
+Android devices
+</span>
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- FUNCTIONS -->
+
+<div class="card">
+
+<div class="head">
+
+<div
+class="title"
+id="featureTitle">
+iOS FUNCTIONS
+</div>
+
+<div class="mini">
+LIVE SYSTEM
+</div>
+
+</div>
+
+
+<div class="feature">
+
+<div>
+
+<div class="feature-name">
+Nhẹ tâm
+</div>
+
+<div class="feature-desc">
+Smooth control simulation
+</div>
+
+</div>
+
+<div
+class="switch"
+data-name="NHẸ TÂM"
+role="button"
+tabindex="0">
+<i></i>
+</div>
+
+</div>
+
+
+<div class="feature">
+
+<div>
+
+<div class="feature-name">
+Fix rung
+</div>
+
+<div class="feature-desc">
+Stabilization simulation
+</div>
+
+</div>
+
+<div
+class="switch"
+data-name="FIX RUNG"
+role="button"
+tabindex="0">
+<i></i>
+</div>
+
+</div>
+
+
+<div class="feature">
+
+<div>
+
+<div class="feature-name">
+Bám tâm
+</div>
+
+<div class="feature-desc">
+Aim visualization simulation
+</div>
+
+</div>
+
+<div
+class="switch"
+data-name="BÁM TÂM"
+role="button"
+tabindex="0">
+<i></i>
+</div>
+
+</div>
+
+
+<!-- CHART -->
+
+<div class="activity-chart">
+
+<div class="activity-top">
+
+<div class="activity-title">
+REAL-TIME ACTIVITY
+</div>
+
+<div class="activity-live">
+
+<i></i>
+LIVE
+
+</div>
+
+</div>
+
+<div class="chart">
+
+<svg
+viewBox="0 0 500 105"
+preserveAspectRatio="none">
+
+<defs>
+
+<linearGradient
+id="chartGradient"
+x1="0"
+y1="0"
+x2="0"
+y2="1">
+
+<stop
+offset="0"
+stop-color="#ff1738"/>
+
+<stop
+offset="1"
+stop-color="#ff1738"
+stop-opacity="0"/>
+
+</linearGradient>
+
+</defs>
+
+<path
+class="chart-fill"
+id="chartFill"
+d="">
+</path>
+
+<path
+class="chart-line"
+id="chartLine"
+d="">
+</path>
+
+<circle
+class="chart-dot"
+id="chartDot"
+cx="0"
+cy="0"
+r="4">
+</circle>
+
+</svg>
+
+</div>
+
+<div class="chart-status">
+
+<span>
+ACTIVITY
+</span>
+
+<span
+class="chart-value"
+id="chartValue">
+82%
+</span>
+
+</div>
+
+</div>
+
+
+<!-- ANDROID -->
+
+<div
+id="androidOnly"
+class="hidden">
+
+<div class="feature">
+
+<div>
+
+<div class="feature-name">
+Tâm ảo
+</div>
+
+<div class="feature-desc">
+Advanced custom crosshair
+</div>
+
+</div>
+
+<div
+id="crossSwitch"
+class="switch"
+role="button"
+tabindex="0">
+<i></i>
+</div>
+
+</div>
+
+
+<div
+id="editor"
+class="editor hidden">
+
+<div class="control">
+
+<div class="control-head">
+
+<span>
+HÌNH DẠNG
+</span>
+
+<span
+class="value"
+id="shapeName">
+TRÒN
+</span>
+
+</div>
+
+<div class="shape-grid">
+
+<button
+class="shape active"
+type="button"
+data-shape="circle"
+data-name="TRÒN">
+○
+</button>
+
+<button
+class="shape"
+type="button"
+data-shape="double"
+data-name="VÒNG KÉP">
+◎
+</button>
+
+<button
+class="shape"
+type="button"
+data-shape="plus"
+data-name="DẤU CỘNG">
++
+</button>
+
+<button
+class="shape"
+type="button"
+data-shape="cross"
+data-name="CHỮ THẬP">
+×
+</button>
+
+<button
+class="shape"
+type="button"
+data-shape="dot"
+data-name="CHẤM">
+•
+</button>
+
+</div>
+
+</div>
+
+
+<div class="control">
+
+<div class="control-head">
+
+<span>
+KÍCH THƯỚC
+</span>
+
+<span
+class="value"
+id="sizeValue">
+80 px
+</span>
+
+</div>
+
+<input
+id="sizeRange"
+type="range"
+min="18"
+max="150"
+value="80">
+
+</div>
+
+
+<div class="control">
+
+<div class="control-head">
+
+<span>
+ĐỘ DÀY
+</span>
+
+<span
+class="value"
+id="thicknessValue">
+3 px
+</span>
+
+</div>
+
+<input
+id="thicknessRange"
+type="range"
+min="1"
+max="8"
+value="3">
+
+</div>
+
+
+<div class="color-line">
+
+<span
+style="font-size:9px;color:#81757b">
+MÀU TÂM
+</span>
+
+<input
+id="colorPicker"
+type="color"
+value="#ff1738">
+
+</div>
+
+
+<div class="feature">
+
+<div>
+
+<div class="feature-name">
+Chấm giữa
+</div>
+
+<div class="feature-desc">
+Hiển thị điểm trung tâm
+</div>
+
+</div>
+
+<div
+id="dotSwitch"
+class="switch on"
+role="button"
+tabindex="0">
+<i></i>
+</div>
+
+</div>
+
+
+<div class="preview">
+
+<div
+id="crosshair"
+class="crosshair circle">
+
+<div
+id="centerDot"
+class="center-dot">
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- GAME -->
+
+<div class="card">
+
+<div class="head">
+
+<div class="title">
+LAUNCH GAME
+</div>
+
+<div class="mini">
+SELECT VERSION
+</div>
+
+</div>
+
+<div class="games">
+
+<div class="game">
+
+<div>
+
+<b>
+FREE FIRE
+</b>
+
+<span>
+Standard Edition
+</span>
+
+</div>
+
+<button
+class="open"
+type="button"
+data-game="ff">
+OPEN
+</button>
+
+</div>
+
+
+<div class="game">
+
+<div>
+
+<b>
+FREE FIRE MAX
+</b>
+
+<span>
+MAX Edition
+</span>
+
+</div>
+
+<button
+class="open"
+type="button"
+data-game="ffmax">
+OPEN
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<button
+id="logoutBtn"
+class="logout"
+type="button">
+LOG OUT
+</button>
+
+</div>
+
+</section>
+
+
+<div
+id="toast"
+class="toast">
+</div>
+
+
+<script>
+"use strict";
+
+/* =====================================================
+   AIMNEXUS KEY SYSTEM
+   Mỗi key chỉ kích hoạt một lần trên trình duyệt.
+   Thời hạn: 3 ngày.
+===================================================== */
+
+const KEY_DURATION =
+  3 * 24 * 60 * 60 * 1000;
+
+
+/* =====================================================
+   100 KEYS
+===================================================== */
+
+const KEY_LIST = [
+
+"ANX-3D-7KQ9-X2MP",
+"ANX-3D-L8V4-NQ7Z",
+"ANX-3D-P6XR-9K2T",
+"ANX-3D-M4QZ-8V7N",
+"ANX-3D-X9LP-3K6R",
+"ANX-3D-Q7TN-5V8M",
+"ANX-3D-2KXR-9P6L",
+"ANX-3D-V8NQ-4Z7T",
+"ANX-3D-R5MX-8K2P",
+"ANX-3D-9QVL-6N4X",
+"ANX-3D-K7ZT-2M8Q",
+"ANX-3D-N4RP-7X9V",
+"ANX-3D-X6KM-3Q8Z",
+"ANX-3D-T9VN-5P2R",
+"ANX-3D-4ZQX-8K6M",
+"ANX-3D-P7LR-2N9V",
+"ANX-3D-M8XK-6Q4T",
+"ANX-3D-Q2VN-9Z7P",
+"ANX-3D-6RKM-4X8N",
+"ANX-3D-Z9TP-7Q2L",
+"ANX-3D-8KXN-5M4R",
+"ANX-3D-V6QP-9T2Z",
+"ANX-3D-R7MX-3K8N",
+"ANX-3D-N9QK-6V4P",
+"ANX-3D-X4ZT-8M7R",
+"ANX-3D-Q6LN-2P9V",
+"ANX-3D-7VKR-5X8M",
+"ANX-3D-M2QP-9Z6T",
+"ANX-3D-K8XN-4R7V",
+"ANX-3D-P9ZM-6Q2K",
+"ANX-3D-5RVT-8N4X",
+"ANX-3D-X7QP-3M9L",
+"ANX-3D-N6KZ-4V8R",
+"ANX-3D-Q9XM-7P2T",
+"ANX-3D-4KRV-8Z6N",
+"ANX-3D-Z7NP-5Q9X",
+"ANX-3D-8MKR-2V6T",
+"ANX-3D-V9QX-4N7P",
+"ANX-3D-R6ZT-8K2M",
+"ANX-3D-P4XN-9V7Q",
+"ANX-3D-2QKR-6M8Z",
+"ANX-3D-K9VP-4X7N",
+"ANX-3D-N8ZM-5R2Q",
+"ANX-3D-X6RT-9K4P",
+"ANX-3D-Q7MN-3V8X",
+"ANX-3D-5KZR-9P6T",
+"ANX-3D-M7XV-2Q8N",
+"ANX-3D-V4QK-8Z9R",
+"ANX-3D-R9NP-6X2M",
+"ANX-3D-Z6KM-4V8Q",
+"ANX-3D-8QXR-7N5P",
+"ANX-3D-P6VT-2K9Z",
+"ANX-3D-N7QX-5M8R",
+"ANX-3D-X9KR-4P6V",
+"ANX-3D-Q8ZM-2N7T",
+"ANX-3D-6KRP-9X4N",
+"ANX-3D-M5VQ-8Z2K",
+"ANX-3D-V7XN-4R9P",
+"ANX-3D-R8KZ-6Q3M",
+"ANX-3D-P9XV-5N7Q",
+"ANX-3D-Z4MR-8K6T",
+"ANX-3D-7QKN-2X9V",
+"ANX-3D-N6XP-4M8Z",
+"ANX-3D-X8VT-7K3Q",
+"ANX-3D-Q5ZR-9N6M",
+"ANX-3D-4KXP-8V7R",
+"ANX-3D-M9QN-6Z2T",
+"ANX-3D-V8KR-5X4P",
+"ANX-3D-R7ZM-9Q6N",
+"ANX-3D-P5XK-2V8Q",
+"ANX-3D-Z9VN-4M7R",
+"ANX-3D-6QXT-8K3N",
+"ANX-3D-K7MP-5Z9V",
+"ANX-3D-N8RQ-4X6T",
+"ANX-3D-X5KV-9P7M",
+"ANX-3D-Q4ZN-8R6K",
+"ANX-3D-9VXM-2N7P",
+"ANX-3D-M6KT-4Q9Z",
+"ANX-3D-R8NP-5V2X",
+"ANX-3D-P7XQ-9K4M",
+"ANX-3D-Z6VR-8N3T",
+"ANX-3D-4QKM-7X9P",
+"ANX-3D-N9ZT-5R6V",
+"ANX-3D-X7MP-2K8Q",
+"ANX-3D-Q8VN-4Z6R",
+"ANX-3D-5KXR-9M7T",
+"ANX-3D-M4ZP-8Q6N",
+"ANX-3D-V9KQ-3X7R",
+"ANX-3D-R6XM-5N8P",
+"ANX-3D-P8ZT-4K9V",
+"ANX-3D-Z7QK-6M2X",
+"ANX-3D-9NVR-5P8K",
+"ANX-3D-K6XM-7Q4Z",
+"ANX-3D-N8QP-2V9R",
+"ANX-3D-X4KR-6M7T",
+"ANX-3D-Q9ZV-8N5P",
+"ANX-3D-7MKT-3X6Q",
+"ANX-3D-V5XN-9R2K",
+"ANX-3D-R8QZ-4P7M",
+"ANX-3D-P6KM-8V9X",
+"ANX-3D-Z9XR-5N4Q",
+"ANX-3D-4VQP-7K8M",
+"ANX-3D-N6ZT-2X9R"
+
+];
+
+const VALID_KEYS =
+  new Set(KEY_LIST);
+
+
+/* =====================================================
+   STORAGE
+===================================================== */
+
+const USED_KEY_PREFIX =
+  "aimnexus_used_key_";
+
+const ACTIVE_KEY_STORAGE =
+  "aimnexus_active_key";
+
+
+function getUsedKey(key){
+  try{
+    return localStorage.getItem(
+      USED_KEY_PREFIX + key
+    );
+  }catch(e){
+    return null;
+  }
+}
+
+
+function markKeyUsed(key,data){
+  try{
+
+    localStorage.setItem(
+      USED_KEY_PREFIX + key,
+      JSON.stringify(data)
+    );
+
+  }catch(e){}
+}
+
+
+function saveActiveKey(data){
+
+  try{
+
+    localStorage.setItem(
+      ACTIVE_KEY_STORAGE,
+      JSON.stringify(data)
+    );
+
+  }catch(e){}
+
+}
+
+
+function getActiveKey(){
+
+  try{
+
+    const raw=
+      localStorage.getItem(
+        ACTIVE_KEY_STORAGE
+      );
+
+    return raw
+      ? JSON.parse(raw)
+      : null;
+
+  }catch(e){
+    return null;
+  }
+
+}
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const $=id=>
+  document.getElementById(id);
+
+const keyInput=
+  $("keyInput");
+
+const loginBtn=
+  $("loginBtn");
+
+const loginPage=
+  $("login");
+
+const appPage=
+  $("app");
+
+const errorBox=
+  $("error");
+
+
+/* =====================================================
+   AUDIO
+===================================================== */
+
+let audioContext=null;
+
+function getAudio(){
+
+  if(!audioContext){
+
+    const AudioCtx=
+      window.AudioContext ||
+      window.webkitAudioContext;
+
+    if(!AudioCtx)
+      return null;
+
+    audioContext=
+      new AudioCtx();
+  }
+
+  if(
+    audioContext.state==="suspended"
+  ){
+    audioContext.resume()
+    .catch(()=>{});
+  }
+
+  return audioContext;
+}
+
+
+function beep(
+  frequency=720,
+  duration=.055,
+  volume=.035
+){
+
+  const ctx=getAudio();
+
+  if(!ctx)
+    return;
+
+  try{
+
+    const oscillator=
+      ctx.createOscillator();
+
+    const gain=
+      ctx.createGain();
+
+    oscillator.type="sine";
+
+    oscillator.frequency.setValueAtTime(
+      frequency,
+      ctx.currentTime
+    );
+
+    gain.gain.setValueAtTime(
+      .0001,
+      ctx.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+      volume,
+      ctx.currentTime+.008
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+      .0001,
+      ctx.currentTime+duration
+    );
+
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+
+    oscillator.start();
+
+    oscillator.stop(
+      ctx.currentTime+
+      duration+
+      .01
+    );
+
+  }catch(e){}
+}
+
+
+function doubleBeep(){
+
+  beep(720,.05,.035);
+
+  setTimeout(
+    ()=>{
+      beep(900,.055,.028);
+    },
+    65
+  );
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+let toastTimer=0;
+
+function toast(message){
+
+  const box=$("toast");
+
+  box.textContent=message;
+
+  box.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer=setTimeout(
+    ()=>{
+      box.classList.remove("show");
+    },
+    1500
+  );
+}
+
+
+/* =====================================================
+   DATE FORMAT
+===================================================== */
+
+function formatDate(timestamp){
+
+  const date=
+    new Date(timestamp);
+
+  return date.toLocaleString(
+    "vi-VN",
+    {
+      day:"2-digit",
+      month:"2-digit",
+      year:"numeric",
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
+}
+
+
+/* =====================================================
+   KEY INFORMATION
+===================================================== */
+
+let activeKeyData=null;
+
+let countdownTimer=null;
+
+
+function showKeyInfo(data){
+
+  activeKeyData=data;
+
+  $("infoKey").textContent=
+    data.key;
+
+  $("infoStart").textContent=
+    formatDate(data.start);
+
+  $("infoExpire").textContent=
+    formatDate(data.expire);
+
+  updateCountdown();
+
+  clearInterval(
+    countdownTimer
+  );
+
+  countdownTimer=
+    setInterval(
+      updateCountdown,
+      1000
+    );
+}
+
+
+function updateCountdown(){
+
+  if(!activeKeyData)
+    return;
+
+  const remaining=
+    activeKeyData.expire-
+    Date.now();
+
+  if(remaining<=0){
+
+    $("countdown").textContent=
+      "KEY ĐÃ HẾT HẠN";
+
+    $("countdown").style.color=
+      "#ff405b";
+
+    return;
+  }
+
+  const totalSeconds=
+    Math.floor(
+      remaining/1000
+    );
+
+  const days=
+    Math.floor(
+      totalSeconds/86400
+    );
+
+  const hours=
+    Math.floor(
+      (totalSeconds%86400)/3600
+    );
+
+  const minutes=
+    Math.floor(
+      (totalSeconds%3600)/60
+    );
+
+  const seconds=
+    totalSeconds%60;
+
+  $("countdown").textContent=
+    "CÒN "+
+    days+
+    " NGÀY "+
+    String(hours).padStart(2,"0")+
+    ":"+
+    String(minutes).padStart(2,"0")+
+    ":"+
+    String(seconds).padStart(2,"0");
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+function login(){
+
+  const value=
+    keyInput.value
+      .trim()
+      .toUpperCase();
+
+  if(!VALID_KEYS.has(value)){
+
+    beep(180,.07,.025);
+
+    errorBox.textContent=
+      "KEY KHÔNG HỢP LỆ";
+
+    keyInput.focus();
+
+    return;
+  }
+
+
+  /*
+    Kiểm tra key đã từng được kích hoạt
+    trên trình duyệt này chưa.
+  */
+
+  const oldUsed=
+    getUsedKey(value);
+
+  if(oldUsed){
+
+    beep(180,.07,.025);
+
+    errorBox.textContent=
+      "KEY ĐÃ ĐƯỢC SỬ DỤNG";
+
+    keyInput.focus();
+
+    return;
+  }
+
+
+  const now=
+    Date.now();
+
+  const data={
+
+    key:value,
+
+    start:now,
+
+    expire:
+      now+
+      KEY_DURATION
+
+  };
+
+
+  markKeyUsed(
+    value,
+    data
+  );
+
+  saveActiveKey(
+    data
+  );
+
+  showKeyInfo(
+    data
+  );
+
+
+  beep(
+    820,
+    .06,
+    .035
+  );
+
+  errorBox.textContent="";
+
+  loginPage.style.display=
+    "none";
+
+  appPage.style.display=
+    "block";
+
+  toast(
+    "ACCESS GRANTED • 3 DAYS"
+  );
+}
+
+
+loginBtn.addEventListener(
+  "click",
+  login
+);
+
+
+keyInput.addEventListener(
+  "keydown",
+  event=>{
+
+    if(
+      event.key==="Enter"
+    ){
+
+      event.preventDefault();
+
+      login();
+    }
+
+  }
+);
+
+
+/* =====================================================
+   RESTORE ACTIVE SESSION
+===================================================== */
+
+function restoreSession(){
+
+  const data=
+    getActiveKey();
+
+  if(!data)
+    return;
+
+  if(
+    !VALID_KEYS.has(
+      data.key
+    )
+  )
+    return;
+
+  if(
+    Date.now()>=
+    data.expire
+  )
+    return;
+
+  activeKeyData=data;
+
+  showKeyInfo(data);
+
+  loginPage.style.display=
+    "none";
+
+  appPage.style.display=
+    "block";
+}
+
+
+/* =====================================================
+   SWITCH
+===================================================== */
+
+function toggleSwitch(el){
+
+  const enabled=
+    !el.classList.contains("on");
+
+  el.classList.toggle(
+    "on",
+    enabled
+  );
+
+  if(enabled){
+
+    doubleBeep();
+
+    if(el.animate){
+
+      el.animate(
+        [
+          {transform:"scale(.92)"},
+          {transform:"scale(1.05)"},
+          {transform:"scale(1)"}
+        ],
+        {
+          duration:210,
+          easing:
+            "cubic-bezier(.22,1,.36,1)"
+        }
+      );
+
+    }
+
+    toast(
+      "BẬT • "+
+      el.dataset.name
+    );
+
+  }else{
+
+    beep(
+      420,
+      .045,
+      .025
+    );
+
+    toast(
+      "TẮT • "+
+      el.dataset.name
+    );
+  }
+}
+
+
+document
+.querySelectorAll(
+  ".switch[data-name]"
+)
+.forEach(el=>{
+
+  el.addEventListener(
+    "click",
+    ()=>{
+      toggleSwitch(el);
+    }
+  );
+
+});
+
+
+/* =====================================================
+   PLATFORM
+===================================================== */
+
+function resetFunctions(){
+
+  document
+  .querySelectorAll(
+    ".switch[data-name]"
+  )
+  .forEach(el=>{
+    el.classList.remove("on");
+  });
+
+  $("crossSwitch")
+    .classList.remove("on");
+
+  $("dotSwitch")
+    .classList.add("on");
+
+  $("editor")
+    .classList.add("hidden");
+}
+
+
+function changePlatform(type){
+
+  resetFunctions();
+
+  $("iosBtn")
+    .classList.toggle(
+      "active",
+      type==="ios"
+    );
+
+  $("androidBtn")
+    .classList.toggle(
+      "active",
+      type==="android"
+    );
+
+  $("platformText")
+    .textContent=
+      type==="ios"
+      ? "iOS"
+      : "ANDROID";
+
+  $("featureTitle")
+    .textContent=
+      type==="ios"
+      ? "iOS FUNCTIONS"
+      : "ANDROID FUNCTIONS";
+
+  $("androidOnly")
+    .classList.toggle(
+      "hidden",
+      type==="ios"
+    );
+
+  beep(
+    650,
+    .045,
+    .025
+  );
+
+  toast(
+    type==="ios"
+    ? "iOS • READY"
+    : "ANDROID • READY"
+  );
+}
+
+
+$("iosBtn")
+.addEventListener(
+  "click",
+  ()=>{
+    changePlatform("ios");
+  }
+);
+
+
+$("androidBtn")
+.addEventListener(
+  "click",
+  ()=>{
+    changePlatform("android");
+  }
+);
+
+
+/* =====================================================
+   CROSSHAIR
+===================================================== */
+
+$("crossSwitch")
+.addEventListener(
+  "click",
+  function(){
+
+    const enabled=
+      !this.classList.contains("on");
+
+    this.classList.toggle(
+      "on",
+      enabled
+    );
+
+    if(enabled){
+
+      beep(
+        820,
+        .05,
+        .035
+      );
+
+      $("editor")
+        .classList.remove(
+          "hidden"
+        );
+
+      toast(
+        "TÂM ẢO ĐÃ BẬT"
+      );
+
+    }else{
+
+      beep(
+        420,
+        .045,
+        .025
+      );
+
+      $("editor")
+        .classList.add(
+          "hidden"
+        );
+
+      toast(
+        "TÂM ẢO ĐÃ TẮT"
+      );
+    }
+  }
+);
+
+
+let currentShape="circle";
+
+
+function setShape(
+  shape,
+  name,
+  button
+){
+
+  currentShape=shape;
+
+  document
+  .querySelectorAll(".shape")
+  .forEach(x=>{
+    x.classList.remove("active");
+  });
+
+  button.classList.add("active");
+
+  $("shapeName")
+    .textContent=name;
+
+  beep(
+    760,
+    .045,
+    .025
+  );
+
+  updateCrosshair();
+}
+
+
+document
+.querySelectorAll(".shape")
+.forEach(button=>{
+
+  button.addEventListener(
+    "click",
+    ()=>{
+      setShape(
+        button.dataset.shape,
+        button.dataset.name,
+        button
+      );
+    }
+  );
+
+});
+
+
+function updateCrosshair(){
+
+  const size=
+    Number(
+      $("sizeRange").value
+    );
+
+  const thickness=
+    Number(
+      $("thicknessRange").value
+    );
+
+  const color=
+    $("colorPicker").value;
+
+  const cross=
+    $("crosshair");
+
+  $("sizeValue")
+    .textContent=
+      size+" px";
+
+  $("thicknessValue")
+    .textContent=
+      thickness+" px";
+
+  cross.className=
+    "crosshair "+
+    currentShape;
+
+  cross.style.color=
+    color;
+
+  if(
+    currentShape!=="dot"
+  ){
+
+    cross.style.width=
+      size+"px";
+
+    cross.style.height=
+      size+"px";
+
+    cross.style.borderWidth=
+      thickness+"px";
+  }
+
+  $("centerDot")
+    .style.display=
+      $("dotSwitch")
+      .classList.contains("on")
+      ? "block"
+      : "none";
+}
+
+
+$("sizeRange")
+.addEventListener(
+  "input",
+  updateCrosshair
+);
+
+$("thicknessRange")
+.addEventListener(
+  "input",
+  updateCrosshair
+);
+
+$("colorPicker")
+.addEventListener(
+  "input",
+  updateCrosshair
+);
+
+
+$("dotSwitch")
+.addEventListener(
+  "click",
+  function(){
+
+    const enabled=
+      !this.classList.contains("on");
+
+    this.classList.toggle(
+      "on",
+      enabled
+    );
+
+    $("centerDot")
+      .style.display=
+        enabled
+        ? "block"
+        : "none";
+
+    beep(
+      enabled?760:420,
+      .045,
+      .025
+    );
+
+    toast(
+      enabled
+      ? "CHẤM GIỮA • ON"
+      : "CHẤM GIỮA • OFF"
+    );
+  }
+);
+
+
+/* =====================================================
+   LIVE CHART
+===================================================== */
+
+const chartLine=
+  $("chartLine");
+
+const chartFill=
+  $("chartFill");
+
+const chartDot=
+  $("chartDot");
+
+const chartValue=
+  $("chartValue");
+
+let chartPoints=[
+  70,54,63,43,58,
+  38,48,31,45,27,
+  39,24,36,20,33,
+  18,29,22,35,25
+];
+
+
+function renderChart(){
+
+  const width=500;
+  const height=105;
+  const padding=5;
+
+  const step=
+    (width-padding*2)/
+    (chartPoints.length-1);
+
+  let line="";
+
+  chartPoints.forEach(
+    (value,index)=>{
+
+      const x=
+        padding+
+        index*step;
+
+      const y=
+        height-value;
+
+      line+=
+        (
+          index===0
+          ? "M "
+          : "L "
+        )+
+        x.toFixed(1)+
+        " "+
+        y.toFixed(1)+
+        " ";
+    }
+  );
+
+  chartLine.setAttribute(
+    "d",
+    line
+  );
+
+  const lastX=
+    padding+
+    (chartPoints.length-1)*
+    step;
+
+  const lastY=
+    height-
+    chartPoints[
+      chartPoints.length-1
+    ];
+
+  chartDot.setAttribute(
+    "cx",
+    lastX
+  );
+
+  chartDot.setAttribute(
+    "cy",
+    lastY
+  );
+
+  chartFill.setAttribute(
+    "d",
+    line+
+    "L "+
+    lastX+
+    " "+
+    height+
+    " L "+
+    padding+
+    " "+
+    height+
+    " Z"
+  );
+
+  chartValue.textContent=
+    Math.round(
+      chartPoints[
+        chartPoints.length-1
+      ]
+    )+
+    "%";
+}
+
+
+function animateChart(){
+
+  chartPoints.shift();
+
+  const previous=
+    chartPoints[
+      chartPoints.length-1
+    ];
+
+  let next=
+    previous+
+    (Math.random()-.5)*34;
+
+  next=
+    Math.max(
+      15,
+      Math.min(
+        92,
+        next
+      )
+    );
+
+  chartPoints.push(next);
+
+  renderChart();
+}
+
+
+renderChart();
+
+setInterval(
+  animateChart,
+  850
+);
+
+
+/* =====================================================
+   GAME LAUNCHER
+===================================================== */
+
+document
+.querySelectorAll(".open")
+.forEach(button=>{
+
+  button.addEventListener(
+    "click",
+    ()=>{
+
+      const game=
+        button.dataset.game;
+
+      beep(
+        700,
+        .05,
+        .03
+      );
+
+      toast(
+        game==="ff"
+        ? "ĐANG MỞ FREE FIRE..."
+        : "ĐANG MỞ FREE FIRE MAX..."
+      );
+
+      const url=
+        game==="ff"
+        ? "freefire://"
+        : "freefiremax://";
+
+      setTimeout(
+        ()=>{
+          window.location.href=url;
+        },
+        450
+      );
+
+    }
+  );
+
+});
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+$("logoutBtn")
+.addEventListener(
+  "click",
+  ()=>{
+
+    beep(
+      420,
+      .05,
+      .025
+    );
+
+    appPage.style.display=
+      "none";
+
+    loginPage.style.display=
+      "flex";
+
+    keyInput.value="";
+
+    errorBox.textContent="";
+
+    resetFunctions();
+
+    toast("LOGGED OUT");
+
+  }
+);
+
+
+/* =====================================================
+   RED SNOW CANVAS
+===================================================== */
+
+const canvas=
+  $("redSnow");
+
+const ctx=
+  canvas.getContext(
+    "2d",
+    {
+      alpha:true,
+      desynchronized:true
+    }
+  );
+
+let snow=[];
+
+let width=0;
+let height=0;
+
+let dpr=1;
+
+let raf=0;
+
+
+function resizeSnow(){
+
+  width=
+    window.innerWidth;
+
+  height=
+    window.innerHeight;
+
+  dpr=
+    Math.min(
+      window.devicePixelRatio||1,
+      1.5
+    );
+
+  canvas.width=
+    Math.floor(width*dpr);
+
+  canvas.height=
+    Math.floor(height*dpr);
+
+  canvas.style.width=
+    width+"px";
+
+  canvas.style.height=
+    height+"px";
+
+  ctx.setTransform(
+    dpr,0,0,dpr,0,0
+  );
+}
+
+
+function buildSnow(){
+
+  snow.length=0;
+
+  const amount=
+    Math.min(
+      52,
+      Math.max(
+        34,
+        Math.floor(
+          width*height/22000
+        )
+      )
+    );
+
+  for(
+    let i=0;
+    i<amount;
+    i++
+  ){
+
+    snow.push({
+
+      x:
+        Math.random()*width,
+
+      y:
+        Math.random()*height,
+
+      r:
+        1+
+        Math.random()*2.7,
+
+      speed:
+        .25+
+        Math.random()*.65,
+
+      drift:
+        -.16+
+        Math.random()*.32,
+
+      wave:
+        Math.random()*Math.PI*2,
+
+      waveSpeed:
+        .006+
+        Math.random()*.012,
+
+      alpha:
+        .20+
+        Math.random()*.42
+    });
+  }
+}
+
+
+function drawSnow(){
+
+  ctx.clearRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+  for(
+    let i=0;
+    i<snow.length;
+    i++
+  ){
+
+    const p=snow[i];
+
+    p.y+=p.speed;
+
+    p.wave+=p.waveSpeed;
+
+    p.x+=
+      p.drift+
+      Math.sin(p.wave)*.16;
+
+    if(p.y>height+8){
+
+      p.y=-8;
+
+      p.x=
+        Math.random()*width;
+    }
+
+    if(p.x>width+8)
+      p.x=-8;
+
+    if(p.x<-8)
+      p.x=width+8;
+
+    ctx.beginPath();
+
+    ctx.arc(
+      p.x,
+      p.y,
+      p.r,
+      0,
+      Math.PI*2
+    );
+
+    ctx.fillStyle=
+      "rgba(255,35,70,"+
+      p.alpha+
+      ")";
+
+    ctx.fill();
+
+    if(p.r>2.4){
+
+      ctx.beginPath();
+
+      ctx.arc(
+        p.x,
+        p.y,
+        p.r+2,
+        0,
+        Math.PI*2
+      );
+
+      ctx.fillStyle=
+        "rgba(255,23,56,.045)";
+
+      ctx.fill();
+    }
+  }
+
+  raf=
+    requestAnimationFrame(
+      drawSnow
+    );
+}
+
+
+function startSnow(){
+
+  cancelAnimationFrame(raf);
+
+  resizeSnow();
+
+  buildSnow();
+
+  drawSnow();
+}
+
+
+window.addEventListener(
+  "resize",
+  ()=>{
+    resizeSnow();
+    buildSnow();
+  },
+  {passive:true}
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+updateCrosshair();
+
+startSnow();
+
+restoreSession();
+
+</script>
+
+</body>
+</html>
